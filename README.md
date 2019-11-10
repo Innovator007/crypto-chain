@@ -23,7 +23,7 @@ npm run dev
 ```
 Now to test that the blockchain works perfectly and it synchronizes among different peers and follow the concept of decentralized applications.
 
-Open up another terminal and now you have to set environment variables for this terminal and add follwing command in your terminal:
+Open up another terminal and now you have to set environment variables for this terminal and add following command in your terminal:
 
 ```
 HTTP_PORT=3002 P2P_PORT=5002 PEERS=ws://localhost:5001 npm run dev

@@ -23,7 +23,7 @@ class Block {
 	}
 
 	static genesis() {
-		return new this('Genesis Timestamp', '-----', 'f1r57-h45h', [], 0, DIFFICULTY);
+		return new this('Genesis Timestamp', Date.now(), 'f1r57-h45h', [], 0, DIFFICULTY);
 	}
 
 	static mineBlock(previousBlock, data) {

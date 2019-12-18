@@ -5,9 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watchAll",
-    "start": "node ./app",
-    "dev": "nodemon ./app",
-    "dev-test": "nodemon dev-test"
+    "start": "npm run build-client && node ./app",
+    "dev-server": "nodemon ./app",
+    "dev": "npm run dev-client & npm run dev-server",
+    "dev-client": "npm run clean && parcel client/src/index.html --out-dir client/dist",
+    "dev-test": "nodemon dev-test",
+    "build-client": "npm run clean && parcel build client/src/index.html --out-dir client/dist",
+    "clean": "rm -rf client/dist .cache"
   },
   "jest": {
     "testEnvironment": "node"
@@ -16,10 +20,20 @@
   "author": "Iliyas Attarwala",
   "license": "ISC",
   "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
     "body-parser": "^1.19.0",
     "crypto-js": "^3.1.9-1",
     "elliptic": "^6.5.1",
     "express": "^4.17.1",
+    "history": "^4.10.1",
+    "parcel-bundler": "^1.12.4",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-router-dom": "^5.1.2",
     "uuid": "^3.3.3",
     "ws": "^7.2.0"
   },

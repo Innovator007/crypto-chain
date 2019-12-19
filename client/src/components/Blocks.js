@@ -8,14 +8,13 @@ class Blocks extends Component {
 	}
 
 	componentDidMount() {
-		fetch('/api/blocks')
+		fetch(document.location.origin + '/api/blocks')
 			.then(res => res.json())
 			.then(res => this.setState({ blocks: res }))
 			.catch(e => console.log(e));
 	}
 
 	render() {
-		console.log(this.state.blocks);
 		return (
 			<div>
 				<button className="button margin-medium"><Link to="/">Home</Link></button>

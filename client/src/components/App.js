@@ -9,7 +9,7 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		fetch('/api/wallet-info')
+		fetch(document.location.origin + '/api/wallet-info')
 			.then(res => res.json())
 			.then(res => {
 				this.setState({ walletInfo: res });
@@ -23,7 +23,9 @@ class App extends Component {
 				<h2 className="text-center">Welcome to CryptoChain!</h2>
 				<WalletInfo wallet={this.state.walletInfo} />
 				<span className="text-center">
-				<button className="button"><Link to="/blocks">View Blocks</Link></button>
+					<button className="button"><Link to="/blocks">View Blocks</Link></button>
+					<button className="button"><Link to="/transaction/conduct">Conduct Transaction</Link></button>
+					<button className="button"><Link to="/transactions/pool">View Transaction Pool</Link></button>
 				</span>
 			</div>
 		);

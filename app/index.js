@@ -61,6 +61,20 @@ app.post('/api/transact', (req,res) => {
 	res.redirect('/api/transactions');
 });
 
+app.get('/api/known-addresses', (req,res) => {
+	var addressMap = {};
+	blockchain.chain.forEach(block => {
+		if(block.data.length > 0) {
+			block.data.forEach(transaction => {
+				transaction.outputs.forEach(output => {
+					addressMap[output.address] = output.address;
+				});
+			});
+		}
+	});
+	res.json(Object.keys(addressMap));
+});
+
 app.get("*", (req, res) => {
 	res.sendFile(path.join(__dirname,'../client/dist/index.html'));
 });

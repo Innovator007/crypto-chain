@@ -12,7 +12,6 @@ class Block extends Component {
 
 	renderTransaction = () => {
 		const { timestamp, hash, data } = this.props.block;
-		console.log(data);
 		const stringifiedData = JSON.stringify(data);
 		const dataToDisplay = stringifiedData.length > 35 ? stringifiedData.substring(0, 35) + "..." : stringifiedData;
 		

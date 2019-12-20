@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Transaction from './Transaction';
 
 class Block extends Component {
@@ -37,6 +38,7 @@ class Block extends Component {
 				<p>Timestamp: {new Date(timestamp).toLocaleString()}</p>
 				{ this.renderTransaction() }
 				<button onClick={this.toggleTransaction} className="button read-more-button">{ this.state.displayTransaction ? "Show Less" : "Show More" }</button>
+				<button className="button"><Link to={"/block/" + hash}>View Block</Link></button>
 			</div>
 		);
 	}

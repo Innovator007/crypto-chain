@@ -25,7 +25,6 @@ class Blocks extends Component {
 	}
 
 	renderPagination = () => {
-		console.log([...Array(Math.ceil(this.state.blocksLength/5)).keys()]);
 		return [...Array(Math.ceil(this.state.blocksLength/5)).keys()].map(key => {
 			const pagination = key + 1;
 			return (

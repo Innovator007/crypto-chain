@@ -70,7 +70,7 @@ class wallet {
 
 	static blockchainWallet() {
 		const blockchainWallet = new this();
-		blockchainWallet.address = 'blockchain-wallet';
+		blockchainWallet.publicKey = '**authorized-wallet**';
 		return blockchainWallet;
 	}
 }

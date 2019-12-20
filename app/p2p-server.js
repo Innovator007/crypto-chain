@@ -36,6 +36,14 @@ class P2pServer {
 			socket.on('open', () => {
 				this.connectSocket(socket);
 			});
+
+			socket.on('error', () => {
+				console.log('connection failed to peer: ' + socket.url);
+			});
+
+			socket.on('close', () => {
+				console.log('connection closed by peer: ' + socket.url);
+			});
 		});
 	}
 
@@ -51,7 +59,6 @@ class P2pServer {
 			const data = JSON.parse(message);
 			switch(data.type) {
 				case MESSAGE_TYPES.chain:
-					this.syncChains();
 					this.blockchain.replaceChain(data.chain);
 					break;
 				case MESSAGE_TYPES.transaction:
@@ -84,6 +91,10 @@ class P2pServer {
 
 	broadcastClearTransactions() {
 		this.sockets.forEach(socket => socket.send(JSON.stringify({ type: MESSAGE_TYPES.clear_transactions })))
+	}
+
+	connectedPeers() {
+		return this.sockets.map(socket => socket._socket.remoteAddress + ':' + socket._socket.remotePort);
 	}
 
 	connectedPeersLength() {

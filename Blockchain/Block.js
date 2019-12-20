@@ -2,7 +2,8 @@ const ChainUtil = require('../chain-util');
 const { DIFFICULTY, MINE_RATE } = require('../config');
 
 class Block {
-	constructor(timestamp, previousHash, hash, data, nonce, difficulty) {
+	constructor(index, timestamp, previousHash, hash, data, nonce, difficulty) {
+		this.index = index
 		this.timestamp = timestamp;
 		this.previousHash = previousHash;
 		this.hash = hash;
@@ -13,6 +14,7 @@ class Block {
 
 	toString() {
 		return `Block -
+	Index         : ${this.index}
 	Timestamp     : ${this.timestamp}
 	Previous Hash : ${this.previousHash.substring(0,20)}
 	Hash          : ${this.hash.substring(0,20)}
@@ -23,11 +25,12 @@ class Block {
 	}
 
 	static genesis() {
-		return new this('Genesis Timestamp', '------', 'f1r57-h45h', [], 0, DIFFICULTY);
+		return new this(1, 'Genesis Timestamp', '------', 'f1r57-h45h', [], 0, DIFFICULTY);
 	}
 
 	static mineBlock(previousBlock, data) {
 		let hash, timestamp;
+		let index = previousBlock.index + 1;
 		const previousHash = previousBlock.hash;
 		let { difficulty } = previousBlock;
 
@@ -37,19 +40,19 @@ class Block {
 			nonce++;
 			timestamp = Date.now();
 			difficulty = Block.adjustDifficulty(previousBlock, timestamp);
-			hash = Block.hash(timestamp, previousHash, data, nonce, difficulty);
+			hash = Block.hash(index, timestamp, previousHash, data, nonce, difficulty);
 		} while(hash.substring(0, difficulty) !== '0'.repeat(difficulty));
 		
-		return new this(timestamp, previousHash, hash, data, nonce, difficulty);
+		return new this(index, timestamp, previousHash, hash, data, nonce, difficulty);
 	}
 
-	static hash(timestamp, previousHash, data, nonce, difficulty) {
-		return ChainUtil.hash(`${timestamp}${previousHash}${data}${nonce}${difficulty}`);
+	static hash(index, timestamp, previousHash, data, nonce, difficulty) {
+		return ChainUtil.hash(`${index}${timestamp}${previousHash}${data}${nonce}${difficulty}`);
 	}
 
 	static blockHash(block) {
-		const { timestamp, previousHash, data, nonce, difficulty } = block;
-		return Block.hash(timestamp, previousHash, data, nonce, difficulty);
+		const { index, timestamp, previousHash, data, nonce, difficulty } = block;
+		return Block.hash(index, timestamp, previousHash, data, nonce, difficulty);
 	}
 
 	static adjustDifficulty(previousBlock, currentTime) {

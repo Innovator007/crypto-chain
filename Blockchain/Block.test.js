@@ -1,7 +1,7 @@
 const Block = require('./Block');
 
 describe('Block', () => {
-	let data, previousHash, block;
+	let data, previousBlock, block;
 
 	beforeEach(() => {
 		data = "bar";

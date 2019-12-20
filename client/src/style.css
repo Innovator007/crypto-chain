@@ -105,3 +105,11 @@ a {
 	background: #000;
 	color: #fff;
 }
+
+.view-block {
+	border: 1px solid #ccc;
+	margin: 20px;
+	padding: 20px;
+	border-radius: 5px;
+	font-size: 18px;
+}

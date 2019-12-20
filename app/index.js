@@ -37,6 +37,21 @@ app.get('/api/blocks/:id', (req,res) => {
 	res.json(blocksReversed.slice(startIndex, endIndex));
 });
 
+app.get('/api/block/:hash', (req, res) => {
+	const block = blockchain.chain.filter(block => {
+		return block.hash === req.params.hash;
+	});
+	if(block.length > 0) {
+		res.json(block[0]);
+	} else {
+		res.json({});
+	}
+});
+
+app.get('/api/peers/connected', (req, res) => {
+    res.json(p2pServer.connectedPeers());
+});
+
 app.get("/api/peers/connected/length", (req, res) => {
 	res.json(p2pServer.connectedPeersLength());
 });

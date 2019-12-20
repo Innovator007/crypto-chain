@@ -5,7 +5,8 @@ import WalletInfo from './WalletInfo';
 
 class App extends Component {
 	state = {
-		walletInfo: {}
+		walletInfo: {},
+		peersLength: 0
 	}
 
 	componentDidMount() {
@@ -15,6 +16,10 @@ class App extends Component {
 				this.setState({ walletInfo: res });
 			})
 			.catch(e => console.log(e));
+		fetch(document.location.origin + '/api/peers/connected/length')
+			.then(res => res.json())
+			.then(res => this.setState({ peersLength: res }))
+			.catch(e => console.log(e));
 	}
 
 	render() {
@@ -22,6 +27,7 @@ class App extends Component {
 			<div className="App">
 				<h2 className="text-center">Welcome to CryptoChain!</h2>
 				<WalletInfo wallet={this.state.walletInfo} />
+				<h5 className="text-center">Connected Peers: { this.state.peersLength }</h5>
 				<span className="text-center">
 					<button className="button"><Link to="/blocks">View Blocks</Link></button>
 					<button className="button"><Link to="/transaction/conduct">Conduct Transaction</Link></button>

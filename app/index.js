@@ -37,6 +37,10 @@ app.get('/api/blocks/:id', (req,res) => {
 	res.json(blocksReversed.slice(startIndex, endIndex));
 });
 
+app.get("/api/peers/connected/length", (req, res) => {
+	res.json(p2pServer.connectedPeersLength());
+});
+
 app.get('/api/transactions', (req,res) => {
 	res.json(tp.transactions);
 });
@@ -58,15 +62,6 @@ app.get('/api/mine-transactions', (req,res) => {
 
 app.get('/api/public-key', (req,res) => {
 	res.json({ publicKey: Wallet.publicKey });
-});
-
-app.post('/api/mine', (req,res) => {
-	const block = blockchain.addBlock(req.body.data);
-	console.log(`New Block added: ${block.toString()}`);
-
-	p2pServer.syncChains();
-
-	res.redirect('/api/blocks');
 });
 
 app.post('/api/transact', (req,res) => {

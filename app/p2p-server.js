@@ -8,7 +8,7 @@ const MESSAGE_TYPES = {
 	clear_transactions: 'CLEAR_TRANSACTIONS'
 }
 
-// $ HTTP_PORT=3002 P2P_PORT=5003 PEERS=ws://localhost:5001,ws://localhost:5002 npm run dev
+// $ HTTP_PORT=3003 P2P_PORT=5003 PEERS=ws://localhost:5001,ws://localhost:5002 npm run dev
 
 class P2pServer {
 	constructor(blockchain, transactionPool) {
@@ -51,12 +51,15 @@ class P2pServer {
 			const data = JSON.parse(message);
 			switch(data.type) {
 				case MESSAGE_TYPES.chain:
+					this.syncChains();
 					this.blockchain.replaceChain(data.chain);
 					break;
 				case MESSAGE_TYPES.transaction:
+					this.broadcastTransaction(data.transaction);
 					this.transactionPool.updateOrAddTransaction(data.transaction);
 					break;
 				case MESSAGE_TYPES.clear_transactions:
+					this.broadcastClearTransactions();
 					this.transactionPool.clear();
 					break;
 			}
@@ -81,6 +84,10 @@ class P2pServer {
 
 	broadcastClearTransactions() {
 		this.sockets.forEach(socket => socket.send(JSON.stringify({ type: MESSAGE_TYPES.clear_transactions })))
+	}
+
+	connectedPeersLength() {
+		return this.sockets.length;
 	}
 }
 

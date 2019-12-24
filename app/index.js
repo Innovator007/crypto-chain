@@ -6,7 +6,9 @@ const wallet = require('../wallet');
 const TransactionPool = require('../wallet/transaction-pool');
 const Miner = require('./miner');
 const path = require('path');
+const fs = require('fs');
 const HTTP_PORT = process.env.HTTP_PORT || 3001;
+const BACKUP_PATH = path.join(__dirname, "../backup/blockchain.json");
 
 const app = express();
 const blockchain = new Blockchain();
@@ -17,6 +19,37 @@ const miner = new Miner(blockchain, tp, Wallet, p2pServer);
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../client/dist')));
+
+//removeBackupFile();
+
+try {
+	if (fs.existsSync(BACKUP_PATH)) {
+		console.log("Backup file exists, retrieving chain...");
+		let rawdata = fs.readFileSync(BACKUP_PATH);
+		const chain = JSON.parse(rawdata);
+		blockchain.replaceChain(chain.chain);
+	} else {
+		backupBlockchain(blockchain.chain, true);
+	}
+} catch(err) {
+	console.error(err);
+}
+
+async function removeBackupFile() {
+	await fs.unlinkSync(BACKUP_PATH);
+}
+
+function backupBlockchain(chain, createFile=false) {
+	let backup_data = JSON.stringify({
+		"chain": chain
+	}, null, 2);
+	console.log("Backing up the blockchain!");
+	fs.writeFileSync(BACKUP_PATH, backup_data, function (err, file) {
+  		if (err) throw err;
+  		console.log(file);
+	}); 
+	console.log("Backup succesfull!");
+}
 
 app.get('/api/blocks', (req, res) => {
 	res.json(blockchain.chain);
@@ -64,10 +97,11 @@ app.get('/api/wallet-info', (req,res) => {
 	res.json({ balance: Wallet.calculateBalance(blockchain), address: Wallet.publicKey });
 });
 
-app.get('/api/mine-transactions', (req,res) => {
+app.get('/api/mine-transactions', async (req,res) => {
 	const block = miner.mine();
 	if(block) {
 		console.log(`New Block has been added: ${block.toString()}`);
+		await backupBlockchain(blockchain.chain);
 		res.redirect('/api/blocks');
 	} else {
 		console.log("No new transactions to mine.");

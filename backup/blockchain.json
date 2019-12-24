@@ -1,0 +1,13 @@
+{
+  "chain": [
+    {
+      "index": 1,
+      "timestamp": "Genesis Timestamp",
+      "previousHash": "------",
+      "hash": "f1r57-h45h",
+      "data": [],
+      "nonce": 0,
+      "difficulty": 6
+    }
+  ]
+}

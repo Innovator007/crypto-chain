@@ -1,11 +1,11 @@
-# sf-chain
+# crypto-chain
 
 ### To setup locally:
 Open Terminal and paste in the following commands
 
 ```
-git clone https://github.com/Innovator007/sf-chain.git
-cd sf-chain/
+git clone https://github.com/Innovator007/crypto-chain.git
+cd crypto-chain/
 npm install 
 npm run test
 ```

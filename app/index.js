@@ -113,13 +113,6 @@ app.get('/api/public-key', (req,res) => {
 	res.json({ publicKey: Wallet.publicKey });
 });
 
-app.post('/api/transact', (req,res) => {
-	const { recipient, amount } = req.body;
-	const transaction = Wallet.createTransaction(recipient, amount, blockchain, tp);
-	p2pServer.broadcastTransaction(transaction);
-	res.redirect('/api/transactions');
-});
-
 app.get('/api/known-addresses', (req,res) => {
 	var addressMap = {};
 	blockchain.chain.forEach(block => {
@@ -132,6 +125,19 @@ app.get('/api/known-addresses', (req,res) => {
 		}
 	});
 	res.json(Object.keys(addressMap));
+});
+
+app.post('/api/transact', (req,res) => {
+	const { recipient, amount } = req.body;
+	const transaction = Wallet.createTransaction(recipient, amount, blockchain, tp);
+	p2pServer.broadcastTransaction(transaction);
+	res.redirect('/api/transactions');
+});
+
+app.post('/api/peers/add', (req, res) => {
+	const peers_array = req.body.peers;
+	p2pServer.connectToPeers(peers_array);
+	res.json({});
 });
 
 app.get("*", (req, res) => {

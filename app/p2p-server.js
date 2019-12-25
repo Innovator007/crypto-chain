@@ -24,13 +24,13 @@ class P2pServer {
 
 		server.on("connection", socket => this.connectSocket(socket));
 
-		this.connectToPeers();
+		this.connectToPeers(peers);
 
 		console.log(`Listening for peer-to-peer connections on: ${P2P_PORT}`);
 	}
 
-	connectToPeers() {
-		peers.forEach(peer => {
+	connectToPeers(peers_array) {
+		peers_array.forEach(peer => {
 			const socket = new Websocket(peer);
 
 			socket.on('open', () => {

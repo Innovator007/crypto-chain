@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --watchAll",
     "start": "npm run build-client && node ./app",
-    "dev-server": "node ./app",
+    "dev-server": "nodemon ./app",
     "dev": "npm run dev-client & npm run dev-server",
     "dev-client": "npm run clean && parcel client/src/index.html --out-dir client/dist",
     "dev-test": "nodemon dev-test",

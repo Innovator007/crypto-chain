@@ -8,6 +8,7 @@ const Miner = require('./miner');
 const path = require('path');
 const fs = require('fs');
 const HTTP_PORT = process.env.HTTP_PORT || 3001;
+const BACKUP_DIR = path.join(__dirname, "../backup");
 const BACKUP_PATH = path.join(__dirname, "../backup/blockchain.json");
 
 const app = express();
@@ -21,6 +22,11 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
 //removeBackupFile();
+
+if (!fs.existsSync(BACKUP_DIR)){
+	console.log("Creating Backup folder... created!");
+    fs.mkdirSync(BACKUP_DIR);
+}
 
 try {
 	if (fs.existsSync(BACKUP_PATH)) {

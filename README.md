@@ -1,4 +1,5 @@
-# crypto-chain
+# crypto-chain - A cryptocurrency
+A Bitcoin type cryptocurrency made using Blockchain.
 
 ### To setup locally:
 Open Terminal and paste in the following commands
